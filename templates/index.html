@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Price Checker</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}">
+</head>
+<body>
+    <form method="post" id="tickerForm">
+        <label for="ticker">Enter Stock Ticker:</label>
+        <input type="text" id="ticker" name="ticker" required>
+        <button type="submit">Check Price</button>
+    </form>
+
+    {% if stock_data.name and stock_data.price %}
+        <h2 id="stockHeader">{{ stock_data.name }} ({{ stock_data.symbol }})</h2>
+            {% if stock_data.price and stock_data.previous_close %}
+            {% set price_change = stock_data.price - stock_data.previous_close %}
+            {% set price_change_formatted = price_change | float | round(2) %}
+            {% set price_change_percentage = (price_change / stock_data.previous_close * 100) | float | round(2) %}
+            <h2 id="stockPrice">
+                {% if stock_data.currency == "USD" %}${% endif %}{{ stock_data.price }}{% if stock_data.currency == "EUR" %}€{% endif %}
+                <span style="color: {{ '#19B516' if price_change >= 0 else '#D62D2D' }};">
+                    {{ '+' if price_change > 0 else '' }}{{ price_change_formatted }}
+                    ({{ price_change_percentage }}%)
+                </span>
+            </h2>
+        {% else %}
+            <p>Price information is not available.</p>
+        {% endif %}
+
+        <p class="gap">Total current assets / Total current liabilities (target: > 1)</p>
+        <h3>{{ stats.currentAssets | format_number }} / {{ stats.currentLiabilities | format_number }} = {{ (stats.currentAssets / stats.currentLiabilities) | float | round(2) }}</h3>
+        <p></p>
+
+        <p class="gap">Operating income / Total revenue (target: > 15%)</p>
+        <h3>({{ stats.operatingIncome | format_number }} / {{ stats.totalRevenue | format_number }}) * 100 = {{ (stats.operatingIncome / stats.totalRevenue * 100) | float | round(2) }}%</h3>
+
+        <p class="gap">Financials & statistics</p>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Dividend Yield (1y)</th>
+                    <th>Dividend Rate (1y)</th>
+                    <th>Market Cap</th>
+                    <th>Trailing P/E</th>
+                    <th>Forward P/E</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>{{ (stock_data.dividendYield * 100) | float | round(2) }} %</td>
+                    <td>{{ stock_data.dividendRate }}</td>
+                    <td>{{ stock_data.marketCap }}</td>
+                    <td>{{ stock_data.trailingPE }}</td>
+                    <td>{{ stock_data.forwardPE }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="header">
+                    <td></td>
+                    <td>TTM</td>
+                    <td>{{ stats.quarterDate[0] }}</td>
+                    <td>{{ stats.quarterDate[1] }}</td>
+                    <td>{{ stats.quarterDate[2] }}</td>
+                    <td>{{ stats.quarterDate[3] }}</td>
+                </tr>
+                <tr>
+                    <td>Quarterly free cashflow</td>
+                    <td>{{ stats.TTM_Cashflow }}</td>
+                    <td>{{ stats.quarterlyCashflow[0] }}</td>
+                    <td>{{ stats.quarterlyCashflow[1] }}</td>
+                    <td>{{ stats.quarterlyCashflow[2] }}</td>
+                    <td>{{ stats.quarterlyCashflow[3] }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="header">
+                    <td></td>
+                    <td>TTM</td>
+                    <td>{{ stats.annualDate[0] }}</td>
+                    <td>{{ stats.annualDate[1] }}</td>
+                    <td>{{ stats.annualDate[2] }}</td>
+                    <td>{{ stats.annualDate[3] }}</td>
+                </tr>
+                <tr>
+                    <td>Annual free cashflow</td>
+                    <td>{{ stats.TTM_Cashflow }}</td>
+                    <td>{{ stats.annualCashflow[0] }}</td>
+                    <td>{{ stats.annualCashflow[1] }}</td>
+                    <td>{{ stats.annualCashflow[2] }}</td>
+                    <td>{{ stats.annualCashflow[3] }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="gap">Description:</p>
+        <p>{{ stock_data.description }}</p>
+
+    {% else %}
+        <p>Please enter a proper stock ticker to see the data.</p>
+    {% endif %}
+</body>
+</html>

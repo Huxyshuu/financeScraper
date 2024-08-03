@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Istok+Web:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans+JP:wght@100..900&display=swap');
+
+:root {
+    --dark: #494949;
+}
+
+body, html {
+    margin: 0;
+    padding: 1.5rem;
+}
+
+input, p, h1, h2, h3, h4, h5, h6, button, label, small, td, tr, th, table {
+    font-family: "Istok Web", sans-serif;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    margin: 0.5rem;
+}
+
+#stockPrice {
+    margin-bottom: 2rem;
+}
+
+#tickerForm {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    width: 15rem;
+    text-align: center;
+
+    input[type=text] {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    button {
+        border-radius: 0 0 10px 10px;
+        background-color: var(--dark);
+        color: white;
+        font-size: 1.5rem;
+    }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+table, th, td {
+    border: 1px solid var(--dark);
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+th, .header {
+    background-color: #f2f2f2;
+    font-weight: 700;
+}
+
+tr {
+    height: 2.5rem;
+}
+
+.gap {
+    margin-top: 2rem;
+}
