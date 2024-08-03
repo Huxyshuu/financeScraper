@@ -27,3 +27,7 @@ Run these commands in order inside a terminal to get the app set up properly
 5. Typing in a valid stock ticker will bring up useful information about the stock such as the **current price**, **forward P/E**, etc. *(might sometimes throw a HTTP 401 error, which is usually fixed by restarting the app)*
 
 ![Image of the page](https://i.imgur.com/GtFJGTV.png)
+
+## Tech
+- Flask to build a web interface for the app
+- yfinance to indirectly get the data from yahoo finance api 
